@@ -1,5 +1,4 @@
 from fastapi import FastAPI, UploadFile, File, Form
-from rag import generate_questions
 import shutil
 import os
 
@@ -16,6 +15,9 @@ async def analyze_resume(
     file:UploadFile = File(...),
     job_desc : str = Form(...)
 ):
+    
+    from rag import generate_questions
+
     path = f"temp/{file.filename}"
     with open(path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
