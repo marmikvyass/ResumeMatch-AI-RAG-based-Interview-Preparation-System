@@ -3,6 +3,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from dotenv import load_dotenv
 from langchain_community.vectorstores import FAISS
@@ -27,7 +28,7 @@ def generate_questions(pdf,job_desc):
     chunks = splitter.split_documents(docs)
 
     #create vector and store into vector store/database
-    embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2')
+    embeddings = HuggingFaceEndpointEmbeddings(model='sentence-transformers/all-MiniLM-L6-v2')
     vector_store = FAISS.from_documents(chunks, embeddings)
 
     #use retrievers to get relevent chunks from vector store/database based on query
