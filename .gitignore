@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+
+# FastAPI temp uploads
+temp/
+uploads/
+
+# Vector DB / embeddings
+faiss_index/
+chroma_db/
+*.faiss
+*.pkl
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Cache
+.cache/
+
+# HuggingFace models cache
+models/
+*.bin
+*.pt
+
+# Local docs (optional)
+docs/*.pdf
