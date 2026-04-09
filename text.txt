@@ -55,3 +55,65 @@ We are looking for a Generative AI Engineer Intern to design and build AI-powere
 """
 
 Job Title: Generative AI Engineer Intern  Job Description: We are looking for a Generative AI Engineer Intern to build AI-powered applications using Large Language Models (LLMs). The candidate will work on Retrieval-Augmented Generation (RAG), prompt engineering, embeddings, and AI agents.  Responsibilities: - Build applications using LLMs (OpenAI, Groq, Claude, etc.) - Implement RAG pipelines using vector databases (FAISS, Chroma, Pinecone) - Develop REST APIs for AI features - Integrate AI models with frontend applications - Work with embeddings and semantic search - Optimize latency and token usage - Deploy AI services using AWS / Docker - Handle structured JSON outputs from LLMs  Required Skills: - Python - LangChain or LlamaIndex - REST API development - Vector databases (FAISS / Chroma / Pinecone) - Prompt Engineering - JSON handling - Git  Preferred Skills: - FastAPI - React / MERN stack - RAG architecture - Agents & tool calling - AWS (EC2, S3) - Docker - Streaming responses  Nice to Have: - Built AI chatbot or RAG app - Resume analyzer using LLM - Document question-answering system - AI coding assistant  Experience: 0–1 years (Intern / Fresher)  Location: Remote
+
+
+# resume_query = "skills experience projects technologies achievements responsibilities tools"
+    # context_docs = retrievers.invoke(resume_query)
+
+    # resume_context = "\n\n".join([doc.page_content for doc in context_docs])
+
+
+    # job_description = """
+    # **Job Title:** Generative AI Engineer / LLM Engineer Intern
+
+    # **Job Description:**
+    # We are looking for a Generative AI Engineer Intern to design and build AI-powered applications using large language models (LLMs). You will work on real-world AI features such as Retrieval-Augmented Generation (RAG), prompt engineering, embeddings, and AI agents.
+
+    # **Responsibilities:**
+
+    # * Build applications using LLMs (OpenAI, Groq, Claude, etc.)
+    # * Implement RAG pipelines using vector databases (FAISS, Pinecone, Chroma)
+    # * Design prompts and evaluation pipelines
+    # * Develop REST APIs for AI features
+    # * Integrate AI models with frontend applications
+    # * Work with embeddings and semantic search
+    # * Optimize latency and token usage
+    # * Deploy AI services using AWS / Docker
+
+    # **Required Skills:**
+
+    # * Python
+    # * LangChain / LlamaIndex
+    # * REST API development
+    # * Vector databases (FAISS / Chroma / Pinecone)
+    # * Prompt Engineering
+    # * JSON structured outputs
+    # * Git
+
+    # **Preferred Skills:**
+
+    # * FastAPI
+    # * React / MERN stack
+    # * RAG architecture
+    # * Agents & tool calling
+    # * AWS (EC2, S3)
+    # * Docker
+    # * Streaming responses
+
+    # **Nice to Have:**
+
+    # * Built AI chatbot or RAG app
+    # * Experience with embeddings
+    # * Resume parser / document QA
+    # * LLM evaluation techniques
+
+    # **Example Projects:**
+
+    # * AI chatbot with RAG
+    # * Resume analyzer using LLM
+    # * AI coding assistant
+    # * Document question-answering system
+
+    # **Experience:** 0 to 1 years (Intern / Fresher)
+    # **Location:** Remote / Hybrid
+    # """

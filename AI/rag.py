@@ -12,92 +12,38 @@ load_dotenv()
 import json
 
 
-def generate_questions(pdf,job_desc):
-    llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0, max_tokens=800)
-    #load pdf
-        # pdf = r"D:\FullStack Projects\GenAI Projects\AI-Placement-Preperation\docs\MVResume.pdf"
+
+llm = ChatGroq(
+    model="llama-3.1-8b-instant", 
+    temperature=0, 
+    max_tokens=800
+    )
+
+
+vector_store = None
+def load_pdf(pdf):
+    global vector_store
     loader = PyPDFLoader(pdf)
     docs = loader.load()
-
     #split teh docs into chunks
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=1200,
         chunk_overlap=100,
     )
-
     chunks = splitter.split_documents(docs)
 
     #create vector and store into vector store/database
     embeddings = HuggingFaceEndpointEmbeddings(model='sentence-transformers/paraphrase-MiniLM-L3-v2')
     vector_store = FAISS.from_documents(chunks, embeddings)
-
-    #use retrievers to get relevent chunks from vector store/database based on query
+    
+    
+def generate_questions(job_desc):
+    global vector_store
+#use retrievers to get relevent chunks from vector store/database based on query
     retrievers = vector_store.as_retriever(type='mmr',kwargs={'k' : 2 ,'fetch_k' : 4, 'lambda_mult' : 0.5})
 
     def formated_docs(docs):
         return '\n\n'.join([doc.page_content for doc in docs])
-
-    # resume_query = "skills experience projects technologies achievements responsibilities tools"
-    # context_docs = retrievers.invoke(resume_query)
-
-    # resume_context = "\n\n".join([doc.page_content for doc in context_docs])
-
-
-    # job_description = """
-    # **Job Title:** Generative AI Engineer / LLM Engineer Intern
-
-    # **Job Description:**
-    # We are looking for a Generative AI Engineer Intern to design and build AI-powered applications using large language models (LLMs). You will work on real-world AI features such as Retrieval-Augmented Generation (RAG), prompt engineering, embeddings, and AI agents.
-
-    # **Responsibilities:**
-
-    # * Build applications using LLMs (OpenAI, Groq, Claude, etc.)
-    # * Implement RAG pipelines using vector databases (FAISS, Pinecone, Chroma)
-    # * Design prompts and evaluation pipelines
-    # * Develop REST APIs for AI features
-    # * Integrate AI models with frontend applications
-    # * Work with embeddings and semantic search
-    # * Optimize latency and token usage
-    # * Deploy AI services using AWS / Docker
-
-    # **Required Skills:**
-
-    # * Python
-    # * LangChain / LlamaIndex
-    # * REST API development
-    # * Vector databases (FAISS / Chroma / Pinecone)
-    # * Prompt Engineering
-    # * JSON structured outputs
-    # * Git
-
-    # **Preferred Skills:**
-
-    # * FastAPI
-    # * React / MERN stack
-    # * RAG architecture
-    # * Agents & tool calling
-    # * AWS (EC2, S3)
-    # * Docker
-    # * Streaming responses
-
-    # **Nice to Have:**
-
-    # * Built AI chatbot or RAG app
-    # * Experience with embeddings
-    # * Resume parser / document QA
-    # * LLM evaluation techniques
-
-    # **Example Projects:**
-
-    # * AI chatbot with RAG
-    # * Resume analyzer using LLM
-    # * AI coding assistant
-    # * Document question-answering system
-
-    # **Experience:** 0 to 1 years (Intern / Fresher)
-    # **Location:** Remote / Hybrid
-    # """
-
 
     prompt1 = PromptTemplate(
         template="""
@@ -119,7 +65,6 @@ def generate_questions(pdf,job_desc):
 
         Resume:
             {document}
-
             Job:
                 {job_desc}
                 """,
@@ -137,9 +82,7 @@ def generate_questions(pdf,job_desc):
     chain = parallelChain | prompt1 | llm | parser 
 
     res = chain.invoke(job_desc)
-
     return json.loads(res)
-
 
     
 # print("\nMatch Percentage:\n", result["match_percentage"])
