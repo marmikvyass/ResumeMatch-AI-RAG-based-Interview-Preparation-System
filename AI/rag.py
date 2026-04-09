@@ -21,18 +21,18 @@ def generate_questions(pdf,job_desc):
 
     #split teh docs into chunks
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=200,
+        chunk_size=1200,
+        chunk_overlap=100,
     )
 
     chunks = splitter.split_documents(docs)
 
     #create vector and store into vector store/database
-    embeddings = HuggingFaceEndpointEmbeddings(model='sentence-transformers/all-MiniLM-L6-v2')
+    embeddings = HuggingFaceEndpointEmbeddings(model='sentence-transformers/paraphrase-MiniLM-L3-v2')
     vector_store = FAISS.from_documents(chunks, embeddings)
 
     #use retrievers to get relevent chunks from vector store/database based on query
-    retrievers = vector_store.as_retriever(type='mmr',kwargs={'k' : 4 ,'fetch_k' : 8, 'lambda_mult' : 0.5})
+    retrievers = vector_store.as_retriever(type='mmr',kwargs={'k' : 3 ,'fetch_k' : 8, 'lambda_mult' : 0.5})
 
     def formated_docs(docs):
         return '\n\n'.join([doc.page_content for doc in docs])
