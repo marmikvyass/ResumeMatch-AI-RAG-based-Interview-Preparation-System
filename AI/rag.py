@@ -1,13 +1,5 @@
 from langchain_groq import ChatGroq
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import PromptTemplate
-from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_huggingface import HuggingFaceEndpointEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from dotenv import load_dotenv
-from langchain_community.vectorstores import FAISS
-from langchain_community.document_loaders import PyPDFLoader
 load_dotenv()
 import json
 
@@ -22,6 +14,12 @@ llm = ChatGroq(
 
 vector_store = None
 def load_pdf(pdf):
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+    from langchain_community.document_loaders import PyPDFLoader
+    from langchain_community.vectorstores import FAISS
+    from langchain_huggingface import HuggingFaceEndpointEmbeddings
+
+
     global vector_store
     loader = PyPDFLoader(pdf)
     docs = loader.load()
@@ -38,6 +36,11 @@ def load_pdf(pdf):
     
     
 def generate_questions(job_desc):
+    from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
+    from langchain_core.output_parsers import StrOutputParser
+    from langchain_core.prompts import PromptTemplate
+
+
     global vector_store
 #use retrievers to get relevent chunks from vector store/database based on query
     retrievers = vector_store.as_retriever(type='mmr',kwargs={'k' : 2 ,'fetch_k' : 4, 'lambda_mult' : 0.5})
