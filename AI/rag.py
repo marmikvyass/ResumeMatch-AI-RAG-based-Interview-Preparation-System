@@ -13,7 +13,7 @@ import json
 
 
 def generate_questions(pdf,job_desc):
-    llm = ChatGroq(model="openai/gpt-oss-120b", temperature=0)
+    llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0, max_tokens=800)
     #load pdf
         # pdf = r"D:\FullStack Projects\GenAI Projects\AI-Placement-Preperation\docs\MVResume.pdf"
     loader = PyPDFLoader(pdf)
@@ -32,15 +32,15 @@ def generate_questions(pdf,job_desc):
     vector_store = FAISS.from_documents(chunks, embeddings)
 
     #use retrievers to get relevent chunks from vector store/database based on query
-    retrievers = vector_store.as_retriever(type='mmr',kwargs={'k' : 3 ,'fetch_k' : 8, 'lambda_mult' : 0.5})
+    retrievers = vector_store.as_retriever(type='mmr',kwargs={'k' : 2 ,'fetch_k' : 4, 'lambda_mult' : 0.5})
 
     def formated_docs(docs):
         return '\n\n'.join([doc.page_content for doc in docs])
 
-    resume_query = "skills experience projects technologies achievements responsibilities tools"
-    context_docs = retrievers.invoke(resume_query)
+    # resume_query = "skills experience projects technologies achievements responsibilities tools"
+    # context_docs = retrievers.invoke(resume_query)
 
-    resume_context = "\n\n".join([doc.page_content for doc in context_docs])
+    # resume_context = "\n\n".join([doc.page_content for doc in context_docs])
 
 
     # job_description = """
