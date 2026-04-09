@@ -13,6 +13,7 @@ def home():
 
 @app.post('/upload')
 async def upload_resume(file:UploadFile = File(...)):
+    from rag import load_pdf
 
     path = f"temp/{file.filename}"
     with open(path, "wb") as buffer:
@@ -22,6 +23,7 @@ async def upload_resume(file:UploadFile = File(...)):
 
 @app.post('/analyze')
 async def analyze_resume(job_desc  :str = Form(...)):
+    from rag import generate_questions
     res = generate_questions(job_desc)
     return res
 
