@@ -1,5 +1,6 @@
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
+from injest import load_db
 load_dotenv()
 import json
 
@@ -7,41 +8,23 @@ import json
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant", 
-    temperature=0, 
+    temperature=0.7, 
     max_tokens=800
     )
-
-
 vector_store = None
-def load_pdf(pdf):
-    from langchain_text_splitters import RecursiveCharacterTextSplitter
-    from langchain_community.document_loaders import PyPDFLoader
-    from langchain_community.vectorstores import FAISS
-    from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
-
+def reset_vector():
     global vector_store
-    loader = PyPDFLoader(pdf)
-    docs = loader.load()
-    #split teh docs into chunks
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1200,
-        chunk_overlap=100,
-    )
-    chunks = splitter.split_documents(docs)
+    vector_store = None
 
-    #create vector and store into vector store/database
-    embeddings = HuggingFaceEndpointEmbeddings(model='sentence-transformers/paraphrase-MiniLM-L3-v2')
-    vector_store = FAISS.from_documents(chunks, embeddings)
-    
-    
 def generate_questions(job_desc):
     from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
     from langchain_core.output_parsers import StrOutputParser
     from langchain_core.prompts import PromptTemplate
-
-
     global vector_store
+    if(vector_store is None):
+        vector_store = load_db()
+    
 #use retrievers to get relevent chunks from vector store/database based on query
     retrievers = vector_store.as_retriever(type='mmr',kwargs={'k' : 2 ,'fetch_k' : 4, 'lambda_mult' : 0.5})
 

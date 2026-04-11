@@ -1,7 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, Form
-import shutil
 import os
-from rag import load_pdf,generate_questions
 
 os.makedirs("temp", exist_ok=True)
 
@@ -13,12 +11,15 @@ def home():
 
 @app.post('/upload')
 async def upload_resume(file:UploadFile = File(...)):
-    from rag import load_pdf
-
+    from injest import injest_pdf
+    import shutil
+    from rag import reset_vector
+    
     path = f"temp/{file.filename}"
     with open(path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-    load_pdf(path)
+    reset_vector()
+    injest_pdf(path)
     return {"status": "resume indexed"}
 
 @app.post('/analyze')
