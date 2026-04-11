@@ -24,6 +24,7 @@ def generate_questions(job_desc):
     global vector_store
     if(vector_store is None):
         vector_store = load_db()
+        return {'error' : 'Resume is still proccessing please wait'}
     
 #use retrievers to get relevent chunks from vector store/database based on query
     retrievers = vector_store.as_retriever(type='mmr',kwargs={'k' : 2 ,'fetch_k' : 4, 'lambda_mult' : 0.5})

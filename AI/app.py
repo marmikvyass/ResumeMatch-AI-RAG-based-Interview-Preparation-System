@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, UploadFile, File, Form, BackgroundTasks
 import os
 
 os.makedirs("temp", exist_ok=True)
@@ -19,8 +19,10 @@ async def upload_resume(file:UploadFile = File(...)):
     with open(path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
     reset_vector()
-    injest_pdf(path)
+    
+    BackgroundTasks.add_task(injest_pdf, path)
     return {"status": "resume indexed"}
+
 
 @app.post('/analyze')
 async def analyze_resume(job_desc  :str = Form(...)):
