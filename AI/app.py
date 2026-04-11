@@ -10,7 +10,7 @@ def home():
     return {"message": "Resume Analyzer API running go to /docs for API documentation"}
 
 @app.post('/upload')
-async def upload_resume(file:UploadFile = File(...)):
+async def upload_resume(background_task : BackgroundTasks,file:UploadFile = File(...)):
     from injest import injest_pdf
     import shutil
     from rag import reset_vector
@@ -20,7 +20,7 @@ async def upload_resume(file:UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
     reset_vector()
     
-    BackgroundTasks.add_task(injest_pdf, path)
+    background_task.add_task(injest_pdf, path)
     return {"status": "resume indexed"}
 
 

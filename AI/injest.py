@@ -2,16 +2,16 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEndpointEmbeddings
+from langchain_cohere import CohereEmbeddings
 from dotenv import load_dotenv
-import os
-import shutil
+
 import gc
 import uuid
 
 
 load_dotenv()
-embeddings = HuggingFaceEndpointEmbeddings(
-    model='sentence-transformers/paraphrase-MiniLM-L3-v2'
+embeddings = CohereEmbeddings(
+    model='embed-english-v3.0'
 )
 CURRENT_DB = None
 vector_store = None
